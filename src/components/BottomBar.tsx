@@ -27,32 +27,61 @@ export default function BottomBar({ state, descriptors, navigation }: any) {
             style={styles.btn}
             activeOpacity={0.8}
           >
-            <Image
-              source={icons[route.name]}
+            <View
               style={[
-                styles.icon,
-                { tintColor: isFocused ? colors.primary : '#9CA3AF' },
+                styles.iconWrapper,
+                isFocused && styles.iconWrapperActive,
               ]}
-            />
+            >
+              <Image source={icons[route.name]} style={styles.icon} />
+            </View>
           </TouchableOpacity>
         );
       })}
+
+      {/* Tambahan Profile Icon */}
+      <TouchableOpacity style={styles.btn} activeOpacity={0.8}>
+        <View style={styles.iconWrapper}>
+          <Image
+            source={require('../assets/icons/ic_profile.png')}
+            style={styles.icon}
+          />
+        </View>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: 64,
+    height: 68,
     flexDirection: 'row',
-    backgroundColor: '#fff',
-    borderTopLeftRadius: 18,
-    borderTopRightRadius: 18,
+    backgroundColor: '#1F2937',
     alignItems: 'center',
     justifyContent: 'space-around',
-    elevation: 8,
-    paddingHorizontal: 12,
+    paddingHorizontal: 24,
+    paddingBottom: 8,
   },
-  btn: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  icon: { width: 26, height: 26, resizeMode: 'contain' },
+  btn: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 8,
+  },
+  iconWrapper: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  iconWrapperActive: {
+    backgroundColor: 'rgba(255,255,255,0.15)',
+  },
+  icon: {
+    width: 26,
+    height: 26,
+    resizeMode: 'contain',
+    tintColor: '#9CA3AF',
+  },
 });

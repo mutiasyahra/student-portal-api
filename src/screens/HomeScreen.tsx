@@ -7,8 +7,9 @@ import {
   ScrollView,
   FlatList,
   TouchableOpacity,
+  StatusBar,
+  Image,
 } from 'react-native';
-import Header from '../components/Header';
 import colors from '../theme/color';
 import {
   categories,
@@ -16,14 +17,11 @@ import {
   popular,
   Destination,
 } from '../utils/dummyData';
-import RecommendationCard from '../components/RecommendationCard';
-import DestinationCard from '../components/DestinationCard';
 
 export default function HomeScreen({ navigation }: any) {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [query, setQuery] = useState('');
 
-  // filteredPopular berubah saat selectedCategory / query berubah
   const filteredPopular = useMemo(() => {
     let list = [...popular];
     if (selectedCategory)
@@ -41,87 +39,97 @@ export default function HomeScreen({ navigation }: any) {
 
   return (
     <View style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor={colors.background} />
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Header />
+        {/* Header */}
+        <View style={styles.header}>
+          <View style={styles.logoContainer}>
+            <View style={styles.logo}>
+              <Text style={styles.logoText}>⛰️</Text>
+            </View>
+            <Text style={styles.greeting}>Haikal</Text>
+          </View>
+          <TouchableOpacity style={styles.notifBtn}>
+            <View style={styles.notifDot} />
+            <Text style={styles.notifIcon}>🔔</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Banner */}
+        <View style={styles.banner}>
+          <View style={styles.bannerContent}>
+            <Text style={styles.bannerTitle}>Plan Your{'\n'}Summer!</Text>
+            <TouchableOpacity style={styles.bannerArrow}>
+              <Text style={styles.arrowText}>→</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* Search */}
         <View style={styles.searchWrap}>
-          <TextInput
-            placeholder="Search destination"
-            style={styles.search}
-            value={query}
-            onChangeText={setQuery}
-          />
+          <View style={styles.searchContainer}>
+            <Text style={styles.searchIcon}>🔍</Text>
+            <TextInput
+              placeholder="Search destination..."
+              placeholderTextColor="#9CA3AF"
+              style={styles.search}
+              value={query}
+              onChangeText={setQuery}
+            />
+          </View>
+          <TouchableOpacity style={styles.filterBtn}>
+            <View style={styles.filterLine} />
+            <View style={styles.filterLine} />
+            <View style={styles.filterLine} />
+          </TouchableOpacity>
         </View>
 
-        <View style={{ paddingHorizontal: 16, marginTop: 12 }}>
-          <Text style={styles.sectionTitle}>Categories</Text>
-          <FlatList
-            data={categories}
-            horizontal
-            keyExtractor={it => it.id}
-            showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => {
-              const isActive = selectedCategory === item.key;
-              return (
-                <TouchableOpacity
-                  style={[
-                    styles.catBtn,
-                    { backgroundColor: isActive ? colors.primary : '#fff' },
-                  ]}
-                  onPress={() =>
-                    setSelectedCategory(s => (s === item.key ? null : item.key))
-                  }
-                >
-                  {/* using same icon for all categories (replace if you have unique icons) */}
-                  <Text
-                    style={{
-                      color: isActive ? '#fff' : colors.text,
-                      fontWeight: '700',
-                    }}
-                  >
-                    {item.title}
-                  </Text>
-                </TouchableOpacity>
-              );
-            }}
-            contentContainerStyle={{ paddingVertical: 12 }}
-          />
-        </View>
-
+        {/* Popular Destination */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Recommended</Text>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Popular Destination</Text>
+            <TouchableOpacity>
+              <Text style={styles.viewAll}>View All</Text>
+            </TouchableOpacity>
+          </View>
+
           <FlatList
             data={recommendations}
             keyExtractor={i => i.id}
-            horizontal
             showsHorizontalScrollIndicator={false}
+            scrollEnabled={false}
             renderItem={({ item }) => (
-              <RecommendationCard
-                item={item}
+              <TouchableOpacity
+                style={styles.card}
+                activeOpacity={0.9}
                 onPress={() => navigation.navigate('Detail', { item })}
-              />
+              >
+                <Image source={item.image} style={styles.cardImage} />
+                <View style={styles.cardOverlay}>
+                  <TouchableOpacity style={styles.favoriteBtn}>
+                    <Text style={styles.favoriteIcon}>♡</Text>
+                  </TouchableOpacity>
+                  <View style={styles.cardFooter}>
+                    <View style={styles.locationBadge}>
+                      <Text style={styles.locationIcon}>📍</Text>
+                      <Text style={styles.locationText}>{item.location}</Text>
+                    </View>
+                    <View style={styles.ratingBadge}>
+                      <Text style={styles.ratingIcon}>⭐</Text>
+                      <Text style={styles.ratingText}>{item.rating}</Text>
+                    </View>
+                  </View>
+                  <View style={styles.cardInfo}>
+                    <Text style={styles.cardTitle}>{item.title}</Text>
+                    <Text style={styles.cardPrice}>
+                      ${item.price.toLocaleString()}/pax
+                    </Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
             )}
-            contentContainerStyle={{ paddingLeft: 16, paddingVertical: 12 }}
+            contentContainerStyle={{ paddingHorizontal: 16 }}
           />
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Popular Destination</Text>
-          <View style={styles.grid}>
-            {filteredPopular.map((p: Destination) => (
-              <DestinationCard
-                key={p.id}
-                item={p}
-                onPress={() => navigation.navigate('Detail', { item: p })}
-              />
-            ))}
-            {filteredPopular.length === 0 && (
-              <View style={{ padding: 16 }}>
-                <Text style={{ color: colors.subText }}>
-                  No destinations found.
-                </Text>
-              </View>
-            )}
-          </View>
         </View>
       </ScrollView>
     </View>
@@ -130,34 +138,246 @@ export default function HomeScreen({ navigation }: any) {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background },
-  searchWrap: { paddingHorizontal: 16, marginTop: -24 },
-  search: {
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingTop: 16,
+    paddingBottom: 20,
+  },
+  logoContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  logo: {
+    width: 36,
+    height: 36,
+    backgroundColor: '#E0F2FE',
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  logoText: {
+    fontSize: 20,
+  },
+  greeting: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: colors.text,
+  },
+  notifBtn: {
+    width: 44,
+    height: 44,
+    backgroundColor: colors.primary,
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+  },
+  notifDot: {
+    width: 8,
+    height: 8,
+    backgroundColor: '#fff',
+    borderRadius: 4,
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    zIndex: 1,
+  },
+  notifIcon: {
+    fontSize: 20,
+  },
+  banner: {
+    marginHorizontal: 20,
+    backgroundColor: colors.primary,
+    borderRadius: 16,
+    padding: 24,
+    marginBottom: 20,
+  },
+  bannerContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  bannerTitle: {
+    fontSize: 32,
+    fontWeight: '700',
+    color: '#fff',
+    lineHeight: 38,
+  },
+  bannerArrow: {
+    width: 48,
+    height: 48,
+    backgroundColor: 'rgba(255,255,255,0.25)',
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  arrowText: {
+    color: '#fff',
+    fontSize: 24,
+    fontWeight: '600',
+  },
+  searchWrap: {
+    paddingHorizontal: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginBottom: 24,
+  },
+  searchContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#fff',
     borderRadius: 12,
     paddingHorizontal: 16,
-    height: 46,
-    elevation: 3,
+    height: 52,
+    gap: 10,
   },
-  section: { marginTop: 18 },
-  sectionTitle: {
-    fontWeight: '700',
-    fontSize: 16,
-    paddingHorizontal: 16,
-    marginBottom: 8,
+  searchIcon: {
+    fontSize: 18,
+  },
+  search: {
+    flex: 1,
+    fontSize: 14,
     color: colors.text,
   },
-  grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
+  filterBtn: {
+    width: 52,
+    height: 52,
+    backgroundColor: '#1F2937',
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 4,
   },
-  catBtn: {
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 10,
-    marginRight: 10,
-    borderWidth: 0.5,
-    borderColor: '#E5E7EB',
+  filterLine: {
+    width: 20,
+    height: 2,
+    backgroundColor: '#fff',
+    borderRadius: 1,
+  },
+  section: {
+    marginBottom: 20,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    marginBottom: 16,
+  },
+  sectionTitle: {
+    fontWeight: '700',
+    fontSize: 18,
+    color: colors.text,
+  },
+  viewAll: {
+    color: colors.primary,
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  card: {
+    width: '100%',
+    height: 320,
+    borderRadius: 20,
+    marginBottom: 16,
+    overflow: 'hidden',
+    backgroundColor: '#fff',
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+  },
+  cardImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+  cardOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    padding: 16,
+    justifyContent: 'space-between',
+  },
+  favoriteBtn: {
+    position: 'absolute',
+    top: 16,
+    right: 16,
+    width: 40,
+    height: 40,
+    backgroundColor: 'rgba(255,255,255,0.95)',
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+  },
+  favoriteIcon: {
+    fontSize: 20,
+    color: '#6B7280',
+  },
+  cardFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 'auto',
+    marginBottom: 12,
+  },
+  locationBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(31,41,55,0.75)',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 12,
+    gap: 4,
+  },
+  locationIcon: {
+    fontSize: 12,
+  },
+  locationText: {
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  ratingBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(31,41,55,0.75)',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 12,
+    gap: 4,
+  },
+  ratingIcon: {
+    fontSize: 12,
+  },
+  ratingText: {
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: '700',
+  },
+  cardInfo: {
+    backgroundColor: 'rgba(31,41,55,0.85)',
+    padding: 14,
+    borderRadius: 16,
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#fff',
+    marginBottom: 4,
+  },
+  cardPrice: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#fff',
   },
 });

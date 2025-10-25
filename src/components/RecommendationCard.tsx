@@ -13,19 +13,22 @@ export default function RecommendationCard({
   return (
     <TouchableOpacity style={styles.card} activeOpacity={0.9} onPress={onPress}>
       <Image source={item.image} style={styles.image} />
-      <View style={styles.body}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.sub}>
-          {item.location} • {item.days}
-        </Text>
-        <View style={styles.row}>
-          <Text style={styles.price}>${item.price}</Text>
-          <View style={styles.badge}>
-            <Text style={{ color: '#fff', fontWeight: '700' }}>
-              {item.rating}
-            </Text>
-          </View>
+      <TouchableOpacity style={styles.favoriteBtn}>
+        <Text style={styles.favoriteIcon}>♡</Text>
+      </TouchableOpacity>
+      <View style={styles.overlay}>
+        <View style={styles.locationBadge}>
+          <Text style={styles.locationIcon}>📍</Text>
+          <Text style={styles.locationText}>{item.location}</Text>
         </View>
+        <View style={styles.ratingBadge}>
+          <Text style={styles.ratingIcon}>⭐</Text>
+          <Text style={styles.ratingText}>{item.rating}</Text>
+        </View>
+      </View>
+      <View style={styles.footer}>
+        <Text style={styles.title}>{item.title}</Text>
+        <Text style={styles.price}>${item.price.toLocaleString()}/pax</Text>
       </View>
     </TouchableOpacity>
   );
@@ -33,28 +36,92 @@ export default function RecommendationCard({
 
 const styles = StyleSheet.create({
   card: {
-    width: 260,
-    borderRadius: 12,
+    width: '48%',
+    borderRadius: 16,
     backgroundColor: '#fff',
-    marginRight: 12,
+    marginBottom: 16,
     overflow: 'hidden',
     elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
   },
-  image: { width: '100%', height: 140 },
-  body: { padding: 12 },
-  title: { fontWeight: '700', fontSize: 16, color: colors.text },
-  sub: { color: colors.subText, marginTop: 6, fontSize: 12 },
-  row: {
+  image: {
+    width: '100%',
+    height: 180,
+  },
+  favoriteBtn: {
+    position: 'absolute',
+    top: 12,
+    right: 12,
+    width: 32,
+    height: 32,
+    backgroundColor: 'rgba(255,255,255,0.9)',
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  favoriteIcon: {
+    fontSize: 18,
+    color: colors.text,
+  },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 10,
+    padding: 12,
+    paddingTop: 140,
   },
-  price: { color: colors.primary, fontWeight: '700', fontSize: 16 },
-  badge: {
-    backgroundColor: colors.primary,
+  locationBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 8,
+    gap: 4,
+  },
+  locationIcon: {
+    fontSize: 10,
+  },
+  locationText: {
+    color: '#fff',
+    fontSize: 11,
+    fontWeight: '600',
+  },
+  ratingBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+    gap: 4,
+  },
+  ratingIcon: {
+    fontSize: 10,
+  },
+  ratingText: {
+    color: '#fff',
+    fontSize: 11,
+    fontWeight: '600',
+  },
+  footer: {
+    padding: 12,
+  },
+  title: {
+    fontWeight: '700',
+    fontSize: 15,
+    color: colors.text,
+    marginBottom: 4,
+  },
+  price: {
+    color: colors.text,
+    fontWeight: '600',
+    fontSize: 13,
   },
 });

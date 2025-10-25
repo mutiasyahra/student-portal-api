@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ImageBackground,
   TouchableOpacity,
+  StatusBar,
 } from 'react-native';
 import colors from '../theme/color';
 
@@ -14,33 +15,68 @@ export default function OnboardingScreen({ navigation }: any) {
       source={require('../assets/images/onboarding-bg.jpg')}
       style={styles.bg}
     >
+      <StatusBar
+        barStyle="light-content"
+        translucent
+        backgroundColor="transparent"
+      />
       <View style={styles.overlay}>
-        <Text style={styles.title}>Explore the world</Text>
-        <Text style={styles.sub}>
-          Find the best destinations and plan your trip
-        </Text>
-        <TouchableOpacity
-          style={styles.btn}
-          onPress={() => navigation.replace('Root')}
-        >
-          <Text style={styles.btnText}>Get Started</Text>
-        </TouchableOpacity>
+        <View style={styles.content}>
+          <Text style={styles.title}>Your Next Adventure{'\n'}Starts Here</Text>
+          <Text style={styles.sub}>
+            Life's too short to stay in one place. Find your next favorite{'\n'}
+            city, hidden mountain, and let's explore together.
+          </Text>
+          <TouchableOpacity
+            style={styles.btn}
+            onPress={() => navigation.replace('Root')}
+          >
+            <Text style={styles.btnText}>Start Exploring</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  bg: { flex: 1, justifyContent: 'center' },
-  overlay: { padding: 28 },
-  title: { fontSize: 34, color: '#fff', fontWeight: '800' },
-  sub: { color: '#fff', marginTop: 8, fontSize: 16 },
-  btn: {
-    marginTop: 22,
-    backgroundColor: colors.primary,
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 12,
+  bg: {
+    flex: 1,
+    justifyContent: 'flex-end',
   },
-  btnText: { color: '#fff', fontWeight: '700' },
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    justifyContent: 'flex-end',
+    paddingBottom: 60,
+  },
+  content: {
+    paddingHorizontal: 28,
+  },
+  title: {
+    fontSize: 32,
+    color: '#fff',
+    fontWeight: '700',
+    lineHeight: 40,
+  },
+  sub: {
+    color: '#fff',
+    marginTop: 16,
+    fontSize: 14,
+    lineHeight: 20,
+    opacity: 0.9,
+  },
+  btn: {
+    marginTop: 32,
+    backgroundColor: '#00D9D5',
+    paddingVertical: 16,
+    paddingHorizontal: 32,
+    borderRadius: 25,
+    alignSelf: 'flex-start',
+  },
+  btnText: {
+    color: '#000',
+    fontWeight: '700',
+    fontSize: 15,
+  },
 });
