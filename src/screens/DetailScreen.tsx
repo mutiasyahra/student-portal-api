@@ -8,10 +8,20 @@ import {
   ScrollView,
   StatusBar,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import colors from '../theme/color';
 
 export default function DetailScreen({ route, navigation }: any) {
-  const item = route.params?.item;
+  const {
+    id,
+    title,
+    country,
+    imageUrl,
+    rating,
+    price,
+    description,
+    coordinates,
+  } = route.params;
 
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -20,7 +30,7 @@ export default function DetailScreen({ route, navigation }: any) {
         translucent
         backgroundColor="transparent"
       />
-      <Image source={item.image} style={styles.image} />
+      <Image source={imageUrl} style={styles.image} />
 
       {/* Header Buttons */}
       <View style={styles.headerButtons}>
@@ -28,10 +38,10 @@ export default function DetailScreen({ route, navigation }: any) {
           style={styles.backBtn}
           onPress={() => navigation.goBack()}
         >
-          <Text style={styles.backIcon}>←</Text>
+          <Icon name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.weatherBtn}>
-          <Text style={styles.weatherIcon}>☁️</Text>
+          <Icon name="partly-sunny-outline" size={18} color={colors.text} />
           <Text style={styles.weatherText}>24° C</Text>
         </TouchableOpacity>
       </View>
@@ -40,77 +50,100 @@ export default function DetailScreen({ route, navigation }: any) {
         {/* Title Section */}
         <View style={styles.titleSection}>
           <View style={styles.ratingBadge}>
-            <Text style={styles.ratingIcon}>⭐</Text>
-            <Text style={styles.ratingText}>{item.rating || '5.0'}</Text>
+            <Icon name="star" size={14} color="#FCD34D" />
+            <Text style={styles.ratingText}>{rating.toFixed(1)}</Text>
           </View>
-          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.title}>{title}</Text>
           <Text style={styles.subtitle}>
-            From classical music and worship to breathtaking cruises, Labuan
-            Bajo is ratings belong Indonesia as one with nature days of island
-            exploration.
+            {description ||
+              `Explore the beautiful ${title} and experience unforgettable moments with stunning views and local culture.`}
           </Text>
         </View>
 
         {/* Country Badge */}
         <View style={styles.countryBadge}>
-          <Text style={styles.flag}>🇮🇩</Text>
-          <Text style={styles.country}>Indonesia</Text>
+          <Icon name="location" size={16} color={colors.primary} />
+          <Text style={styles.country}>{country}</Text>
+        </View>
+
+        {/* Coordinates (if available) */}
+        {coordinates && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Location Coordinates</Text>
+            <View style={styles.coordinatesBox}>
+              <View style={styles.coordItem}>
+                <Text style={styles.coordLabel}>Latitude</Text>
+                <Text style={styles.coordValue}>{coordinates.lat}</Text>
+              </View>
+              <View style={styles.coordItem}>
+                <Text style={styles.coordLabel}>Longitude</Text>
+                <Text style={styles.coordValue}>{coordinates.lng}</Text>
+              </View>
+            </View>
+          </View>
+        )}
+
+        {/* Price Information */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Price Information</Text>
+          <View style={styles.priceBox}>
+            <View style={styles.priceRow}>
+              <Text style={styles.priceLabel}>Price per person</Text>
+              <Text style={styles.priceValue}>${price.toLocaleString()}</Text>
+            </View>
+            <View style={styles.priceRow}>
+              <Text style={styles.priceLabel}>Rating</Text>
+              <View style={styles.ratingRow}>
+                <Icon name="star" size={16} color="#FCD34D" />
+                <Text style={styles.priceValue}>{rating.toFixed(1)}/5.0</Text>
+              </View>
+            </View>
+          </View>
         </View>
 
         {/* Description */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>
-            Discover the Beauty of Labuan Bajo
-          </Text>
-          <View style={styles.author}>
-            <Text style={styles.authorText}>👤 by RB Zestay</Text>
-          </View>
+          <Text style={styles.sectionTitle}>About {title}</Text>
           <Text style={styles.description}>
-            Wow amazing the experience in my life very very worth it like it!
-            Very price very well
+            {description ||
+              `${title} is a stunning destination located in ${country}. Experience breathtaking views, rich culture, and unforgettable adventures. Perfect for travelers seeking both relaxation and excitement.`}
           </Text>
-          <TouchableOpacity>
-            <Text style={styles.viewAll}>View All</Text>
-          </TouchableOpacity>
         </View>
 
         {/* Recommendation */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Recommendation in Bajo</Text>
-          <View style={styles.recommendCard}>
-            <Image
-              source={require('../assets/images/dest1.jpg')}
-              style={styles.recommendImage}
-            />
-            <View style={styles.recommendInfo}>
-              <Text style={styles.recommendTitle}>
-                Pinisi Luxury Private Trip
-              </Text>
-              <Text style={styles.recommendDesc}>Some friendly pick-up</Text>
-              <View style={styles.recommendFooter}>
-                <View style={styles.quantity}>
-                  <TouchableOpacity style={styles.qtyBtn}>
-                    <Text>−</Text>
-                  </TouchableOpacity>
-                  <Text style={styles.qtyText}>1</Text>
-                  <TouchableOpacity style={styles.qtyBtn}>
-                    <Text>+</Text>
-                  </TouchableOpacity>
-                </View>
-                <View>
-                  <Text style={styles.totalLabel}>Total Amount</Text>
-                  <Text style={styles.totalPrice}>$10.000</Text>
-                </View>
-              </View>
+          <Text style={styles.sectionTitle}>What to Expect</Text>
+          <View style={styles.featureBox}>
+            <View style={styles.featureItem}>
+              <Icon name="time-outline" size={24} color={colors.primary} />
+              <Text style={styles.featureText}>Flexible Duration</Text>
+            </View>
+            <View style={styles.featureItem}>
+              <Icon name="people-outline" size={24} color={colors.primary} />
+              <Text style={styles.featureText}>Group Friendly</Text>
+            </View>
+            <View style={styles.featureItem}>
+              <Icon name="camera-outline" size={24} color={colors.primary} />
+              <Text style={styles.featureText}>Photo Spots</Text>
+            </View>
+            <View style={styles.featureItem}>
+              <Icon
+                name="restaurant-outline"
+                size={24}
+                color={colors.primary}
+              />
+              <Text style={styles.featureText}>Local Cuisine</Text>
             </View>
           </View>
         </View>
 
         <TouchableOpacity
           style={styles.bookBtn}
-          onPress={() => navigation.navigate('Root', { screen: 'Ticket' })}
+          onPress={() => navigation.navigate('Root', { screen: 'Tickets' })}
         >
-          <Text style={styles.bookBtnText}>Book Now</Text>
+          <Text style={styles.bookBtnText}>
+            Book Now - ${price.toLocaleString()}
+          </Text>
         </TouchableOpacity>
       </ScrollView>
     </View>
@@ -140,11 +173,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  backIcon: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: colors.text,
-  },
   weatherBtn: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -153,9 +181,6 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 20,
     gap: 6,
-  },
-  weatherIcon: {
-    fontSize: 16,
   },
   weatherText: {
     fontSize: 14,
@@ -184,9 +209,6 @@ const styles = StyleSheet.create({
     gap: 4,
     marginBottom: 12,
   },
-  ratingIcon: {
-    fontSize: 14,
-  },
   ratingText: {
     fontSize: 14,
     fontWeight: '700',
@@ -199,9 +221,9 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   subtitle: {
-    fontSize: 13,
+    fontSize: 14,
     color: colors.subText,
-    lineHeight: 20,
+    lineHeight: 22,
   },
   countryBadge: {
     flexDirection: 'row',
@@ -214,9 +236,6 @@ const styles = StyleSheet.create({
     gap: 8,
     marginHorizontal: 20,
     marginTop: 16,
-  },
-  flag: {
-    fontSize: 20,
   },
   country: {
     fontSize: 14,
@@ -233,96 +252,88 @@ const styles = StyleSheet.create({
     color: colors.text,
     marginBottom: 12,
   },
-  author: {
-    marginBottom: 8,
+  coordinatesBox: {
+    flexDirection: 'row',
+    gap: 12,
   },
-  authorText: {
-    fontSize: 13,
+  coordItem: {
+    flex: 1,
+    backgroundColor: colors.background,
+    padding: 16,
+    borderRadius: 12,
+  },
+  coordLabel: {
+    fontSize: 12,
     color: colors.subText,
+    marginBottom: 4,
+  },
+  coordValue: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: colors.text,
+  },
+  priceBox: {
+    backgroundColor: colors.background,
+    padding: 16,
+    borderRadius: 12,
+    gap: 12,
+  },
+  priceRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  priceLabel: {
+    fontSize: 14,
+    color: colors.subText,
+  },
+  priceValue: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: colors.text,
+  },
+  ratingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
   },
   description: {
     fontSize: 14,
     color: colors.text,
     lineHeight: 22,
-    marginBottom: 8,
   },
-  viewAll: {
-    fontSize: 14,
-    color: colors.primary,
-    fontWeight: '600',
-  },
-  recommendCard: {
+  featureBox: {
     flexDirection: 'row',
-    backgroundColor: colors.background,
-    borderRadius: 16,
-    padding: 12,
+    flexWrap: 'wrap',
     gap: 12,
   },
-  recommendImage: {
-    width: 100,
-    height: 100,
+  featureItem: {
+    width: '48%',
+    backgroundColor: colors.background,
+    padding: 16,
     borderRadius: 12,
-  },
-  recommendInfo: {
-    flex: 1,
-    justifyContent: 'space-between',
-  },
-  recommendTitle: {
-    fontSize: 15,
-    fontWeight: '700',
-    color: colors.text,
-  },
-  recommendDesc: {
-    fontSize: 12,
-    color: colors.subText,
-    marginTop: 4,
-  },
-  recommendFooter: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 8,
-  },
-  quantity: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 20,
-    paddingHorizontal: 4,
-    paddingVertical: 4,
     gap: 8,
   },
-  qtyBtn: {
-    width: 24,
-    height: 24,
-    backgroundColor: colors.primary,
-    borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  qtyText: {
-    fontSize: 14,
+  featureText: {
+    fontSize: 13,
     fontWeight: '600',
     color: colors.text,
-    paddingHorizontal: 8,
-  },
-  totalLabel: {
-    fontSize: 10,
-    color: colors.subText,
-  },
-  totalPrice: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: colors.text,
+    textAlign: 'center',
   },
   bookBtn: {
     marginHorizontal: 20,
     marginTop: 24,
     marginBottom: 32,
     backgroundColor: colors.primary,
-    padding: 16,
-    borderRadius: 12,
+    padding: 18,
+    borderRadius: 16,
     alignItems: 'center',
+    elevation: 4,
+    shadowColor: colors.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
   },
   bookBtnText: {
     color: '#fff',

@@ -1,31 +1,47 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import colors from '../theme/color';
+import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 
-export default function BottomBar({ state, descriptors, navigation }: any) {
-  const icons: any = {
-    Home: require('../assets/icons/ic_home.png'),
-    Ticket: require('../assets/icons/ic_ticket.png'),
+export default function BottomBar({
+  state,
+  descriptors,
+  navigation,
+}: BottomTabBarProps) {
+  const getIconName = (routeName: string, isFocused: boolean) => {
+    if (routeName === 'Home') {
+      return isFocused ? 'home' : 'home-outline';
+    }
+    if (routeName === 'Explore') {
+      return isFocused ? 'compass' : 'compass-outline';
+    }
+    if (routeName === 'Profile') {
+      return isFocused ? 'person' : 'person-outline';
+    }
+    return 'ellipse-outline';
   };
 
   return (
     <View style={styles.container}>
-      {state.routes.map((route: any, index: number) => {
+      {state.routes.map((route, index) => {
         const isFocused = state.index === index;
         const onPress = () => {
           const event = navigation.emit({
             type: 'tabPress',
             target: route.key,
+            canPreventDefault: true,
           });
           if (!isFocused && !event.defaultPrevented)
             navigation.navigate(route.name);
         };
+
         return (
           <TouchableOpacity
             key={route.key}
             onPress={onPress}
             style={styles.btn}
-            activeOpacity={0.8}
+            activeOpacity={0.7}
           >
             <View
               style={[
@@ -33,55 +49,49 @@ export default function BottomBar({ state, descriptors, navigation }: any) {
                 isFocused && styles.iconWrapperActive,
               ]}
             >
-              <Image source={icons[route.name]} style={styles.icon} />
+              <Icon
+                name={getIconName(route.name, isFocused)}
+                size={26}
+                color={isFocused ? colors.primary : '#9CA3AF'}
+              />
             </View>
           </TouchableOpacity>
         );
       })}
-
-      {/* Tambahan Profile Icon */}
-      <TouchableOpacity style={styles.btn} activeOpacity={0.8}>
-        <View style={styles.iconWrapper}>
-          <Image
-            source={require('../assets/icons/ic_profile.png')}
-            style={styles.icon}
-          />
-        </View>
-      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: 68,
+    height: 70,
     flexDirection: 'row',
-    backgroundColor: '#1F2937',
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
     alignItems: 'center',
     justifyContent: 'space-around',
     paddingHorizontal: 24,
-    paddingBottom: 8,
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
   },
   btn: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 8,
+    paddingVertical: 12,
   },
   iconWrapper: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
   },
   iconWrapperActive: {
-    backgroundColor: 'rgba(255,255,255,0.15)',
-  },
-  icon: {
-    width: 26,
-    height: 26,
-    resizeMode: 'contain',
-    tintColor: '#9CA3AF',
+    backgroundColor: 'rgba(255, 119, 84, 0.1)',
   },
 });

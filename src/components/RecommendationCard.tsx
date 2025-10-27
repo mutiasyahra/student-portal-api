@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import colors from '../theme/color';
 import { Destination } from '../utils/dummyData';
 
@@ -12,17 +13,17 @@ export default function RecommendationCard({
 }) {
   return (
     <TouchableOpacity style={styles.card} activeOpacity={0.9} onPress={onPress}>
-      <Image source={item.image} style={styles.image} />
+      <Image source={item.imageUrl} style={styles.image} />
       <TouchableOpacity style={styles.favoriteBtn}>
-        <Text style={styles.favoriteIcon}>♡</Text>
+        <Icon name="heart-outline" size={18} color={colors.text} />
       </TouchableOpacity>
       <View style={styles.overlay}>
         <View style={styles.locationBadge}>
-          <Text style={styles.locationIcon}>📍</Text>
-          <Text style={styles.locationText}>{item.location}</Text>
+          <Icon name="location" size={12} color="#fff" />
+          <Text style={styles.locationText}>{item.country}</Text>
         </View>
         <View style={styles.ratingBadge}>
-          <Text style={styles.ratingIcon}>⭐</Text>
+          <Icon name="star" size={12} color="#FCD34D" />
           <Text style={styles.ratingText}>{item.rating}</Text>
         </View>
       </View>
@@ -62,10 +63,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  favoriteIcon: {
-    fontSize: 18,
-    color: colors.text,
-  },
   overlay: {
     position: 'absolute',
     top: 0,
@@ -85,9 +82,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     gap: 4,
   },
-  locationIcon: {
-    fontSize: 10,
-  },
   locationText: {
     color: '#fff',
     fontSize: 11,
@@ -101,9 +95,6 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     borderRadius: 8,
     gap: 4,
-  },
-  ratingIcon: {
-    fontSize: 10,
   },
   ratingText: {
     color: '#fff',

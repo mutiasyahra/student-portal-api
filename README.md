@@ -1,97 +1,199 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Travel App - Session 2
 
-# Getting Started
+A React Native travel application with bottom tab navigation, reusable destination cards, and detail screen with parameter passing.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## 📱 Features
 
-## Step 1: Start Metro
+- **Bottom Tab Navigation** with 3 tabs: Home, Explore, and Profile
+- **Reusable DestinationCard Component** with favorite functionality
+- **Data Passing** from card to Detail Screen via navigation params
+- **Clean UI** with rounded corners, proper spacing, and vector icons
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## 🚀 How to Run
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+### Prerequisites
 
-```sh
-# Using npm
-npm start
+- Node.js (v14 or higher)
+- React Native CLI
+- Android Studio (for Android) or Xcode (for iOS)
 
-# OR using Yarn
-yarn start
+### Installation
+
+1. Clone the repository:
+
+```bash
+git clone <your-repo-url>
+cd travel-app
 ```
 
-## Step 2: Build and run your app
+2. Install dependencies:
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
+```bash
+npm install
+# or
+yarn install
 ```
 
-### iOS
+3. Install vector icons:
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
+```bash
+npm install react-native-vector-icons
 ```
 
-Then, and every time you update your native dependencies, run:
+4. For Android, add this to `android/app/build.gradle`:
 
-```sh
-bundle exec pod install
+```gradle
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+5. For iOS:
 
-```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
+```bash
+cd ios && pod install && cd ..
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+### Run the App
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+For Android:
 
-## Step 3: Modify your app
+```bash
+npx react-native run-android
+```
 
-Now that you have successfully run the app, let's make changes!
+For iOS:
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+```bash
+npx react-native run-ios
+```
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+## 📦 React Native Version
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+- **React Native:** 0.72.x or higher
+- **React Navigation:** 6.x
+- **react-native-vector-icons:** 10.x
 
-## Congratulations! :tada:
+## 🗂️ Navigation Structure
 
-You've successfully run and modified your React Native App. :partying_face:
+```
+AppNavigation (Stack Navigator)
+├── Onboarding
+├── Root (Bottom Tab Navigator)
+│   ├── Home
+│   ├── Explore
+│   └── Profile
+└── Detail
+```
 
-### Now what?
+## 📋 Parameter Types
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+### Navigation to Detail Screen
 
-# Troubleshooting
+When navigating from DestinationCard to Detail Screen, the following parameters are passed:
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+```typescript
+{
+  id: string;              // Unique identifier
+  title: string;           // Destination name
+  country: string;         // Country name
+  imageUrl: ImageSourcePropType; // Image source
+  rating: number;          // Rating (0-5)
+  price: number;           // Price per person
+  description?: string;    // Optional description
+  coordinates?: {          // Optional coordinates
+    lat: number;
+    lng: number;
+  }
+}
+```
 
-# Learn More
+## 📁 Project Structure
 
-To learn more about React Native, take a look at the following resources:
+```
+src/
+├── assets/
+│   ├── icons/
+│   └── images/
+├── components/
+│   ├── BottomBar.tsx          # Custom bottom tab bar
+│   ├── DestinationCard.tsx    # Reusable destination card
+│   └── Header.tsx
+├── navigation/
+│   ├── AppNavigation.tsx      # Stack navigator
+│   └── BottomTabs.tsx         # Bottom tab navigator
+├── screens/
+│   ├── HomeScreen.tsx         # Home with destination cards
+│   ├── ExploreScreen.tsx      # Simple explore screen
+│   ├── ProfileScreen.tsx      # Simple profile screen
+│   ├── DetailScreen.tsx       # Detail with params
+│   └── OnboardingScreen.tsx
+├── theme/
+│   ├── color.ts               # Color palette
+│   └── font.ts
+└── utils/
+    └── dummyData.ts           # Local destination data
+```
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+## 🎨 UI Components
+
+### DestinationCard Props
+
+```typescript
+{
+  id: string;
+  title: string;
+  country: string;
+  imageUrl: ImageSourcePropType;
+  rating: number;
+  price: number;
+  description?: string;
+  coordinates?: { lat: number; lng: number };
+  onPress?: () => void;
+}
+```
+
+### Features
+
+- ✅ Image with overlay
+- ✅ Country badge with location icon
+- ✅ Star rating badge
+- ✅ Favorite (heart) icon with toggle
+- ✅ Price per pax display
+- ✅ Pressed state animation
+
+## 🎯 Requirements Met
+
+- [x] Bottom Tab Navigation (Home, Explore, Profile)
+- [x] Active/Inactive tab icons
+- [x] Rounded tab bar design
+- [x] Greeting header on Home
+- [x] CTA Banner
+- [x] Search bar (UI only)
+- [x] Popular Destination section
+- [x] Minimum 2 DestinationCards
+- [x] Reusable DestinationCard component
+- [x] All required card elements (image, country, title, rating, price, favorite)
+- [x] Navigation to Detail Screen with params
+- [x] Detail Screen renders all data from params
+- [x] Clean UI (spacing, rounded corners, icons)
+- [x] TypeScript implementation
+- [x] Local data (no API)
+
+## 🎁 Bonus Features
+
+- [x] Pressed state on cards
+- [x] Favorite toggle functionality
+- [x] Vector icons for professional look
+- [x] Smooth animations
+- [x] Extra UI polish (shadows, gradients)
+
+## 📸 Screenshots
+
+[Add your screenshots here]
+
+## 👨‍💻 Author
+
+**Haikal**
+
+## 📄 License
+
+MIT License

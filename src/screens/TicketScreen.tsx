@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StatusBar,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import colors from '../theme/color';
 
 const dummyTickets = [
@@ -36,7 +37,7 @@ const dummyTickets = [
   },
 ];
 
-export default function TicketScreen() {
+export default function TicketScreen({ navigation }: any) {
   const [selectedCountry, setSelectedCountry] = useState('Netherlands');
   const [selectedDate, setSelectedDate] = useState('23');
 
@@ -58,12 +59,12 @@ export default function TicketScreen() {
 
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity>
-          <Text style={styles.backIcon}>←</Text>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Icon name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
         <Text style={styles.title}>Tickets</Text>
         <TouchableOpacity>
-          <Text style={styles.menuIcon}>⋮</Text>
+          <Icon name="ellipsis-vertical" size={24} color={colors.text} />
         </TouchableOpacity>
       </View>
 
@@ -72,7 +73,7 @@ export default function TicketScreen() {
         <Text style={styles.label}>Current location</Text>
         <TouchableOpacity style={styles.dropdown}>
           <Text style={styles.dropdownText}>{selectedCountry}</Text>
-          <Text style={styles.dropdownIcon}>▼</Text>
+          <Icon name="chevron-down" size={20} color={colors.subText} />
         </TouchableOpacity>
       </View>
 
@@ -97,7 +98,10 @@ export default function TicketScreen() {
 
       {/* Date Selector */}
       <View style={styles.section}>
-        <Text style={styles.dateMonth}>June, 2025 ▼</Text>
+        <View style={styles.dateHeader}>
+          <Text style={styles.dateMonth}>June, 2025</Text>
+          <Icon name="chevron-down" size={16} color={colors.text} />
+        </View>
         <View style={styles.dateRow}>
           {dates.map((d, idx) => (
             <TouchableOpacity
@@ -149,7 +153,7 @@ export default function TicketScreen() {
                     <Text style={styles.airportCity}>{item.from}</Text>
                   </View>
                   <View style={styles.planeIcon}>
-                    <Text style={styles.plane}>✈️</Text>
+                    <Icon name="airplane" size={20} color="#fff" />
                   </View>
                   <View style={styles.airportBox}>
                     <Text style={styles.airportCode}>{item.toCode}</Text>
@@ -170,12 +174,14 @@ export default function TicketScreen() {
               </View>
             </View>
 
-            {/* Right Side - Price */}
-            <View style={styles.ticketRight}>
-              <View style={styles.playBtn}>
-                <Text style={styles.playIcon}>▶</Text>
+            {/* Right Side - Price with Dashed Border */}
+            <View style={styles.dashedBorder}>
+              <View style={styles.ticketRight}>
+                <View style={styles.playBtn}>
+                  <Icon name="play" size={16} color={colors.primary} />
+                </View>
+                <Text style={styles.price}>${item.price}</Text>
               </View>
-              <Text style={styles.price}>${item.price}</Text>
             </View>
           </View>
         )}
@@ -196,20 +202,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 16,
     paddingBottom: 16,
-  },
-  backIcon: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: colors.text,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F3F4F6',
   },
   title: {
     fontSize: 18,
     fontWeight: '700',
-    color: colors.text,
-  },
-  menuIcon: {
-    fontSize: 24,
-    fontWeight: '600',
     color: colors.text,
   },
   section: {
@@ -220,23 +218,20 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: colors.subText,
     marginBottom: 8,
+    marginTop: 16,
   },
   dropdown: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: colors.background,
-    padding: 12,
+    padding: 14,
     borderRadius: 12,
   },
   dropdownText: {
     fontSize: 16,
     fontWeight: '600',
     color: colors.text,
-  },
-  dropdownIcon: {
-    fontSize: 12,
-    color: colors.subText,
   },
   tabs: {
     flexDirection: 'row',
@@ -245,9 +240,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   tab: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 18,
     paddingVertical: 10,
-    borderRadius: 20,
+    borderRadius: 24,
     backgroundColor: colors.background,
   },
   tabActive: {
@@ -261,11 +256,16 @@ const styles = StyleSheet.create({
   tabTextActive: {
     color: '#fff',
   },
+  dateHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 12,
+  },
   dateMonth: {
     fontSize: 16,
     fontWeight: '600',
     color: colors.text,
-    marginBottom: 12,
   },
   dateRow: {
     flexDirection: 'row',
@@ -273,11 +273,11 @@ const styles = StyleSheet.create({
   },
   dateBox: {
     alignItems: 'center',
-    paddingVertical: 8,
-    paddingHorizontal: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
     borderRadius: 12,
     backgroundColor: colors.background,
-    minWidth: 45,
+    minWidth: 48,
   },
   dateBoxActive: {
     backgroundColor: colors.primary,
@@ -321,6 +321,7 @@ const styles = StyleSheet.create({
   ticketLeft: {
     flex: 1,
     padding: 16,
+    backgroundColor: colors.primary,
   },
   ticketSide: {
     flex: 1,
@@ -347,7 +348,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   airportCity: {
-    fontSize: 11,
+    fontSize: 10,
     color: 'rgba(255,255,255,0.8)',
   },
   planeIcon: {
@@ -357,9 +358,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  plane: {
-    fontSize: 20,
   },
   timeRow: {
     flexDirection: 'row',
@@ -382,9 +380,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.3)',
     marginHorizontal: 12,
   },
-  ticketRight: {
+  dashedBorder: {
     width: 90,
     backgroundColor: colors.primary,
+    borderLeftWidth: 2,
+    borderLeftColor: '#fff',
+    borderStyle: 'dashed',
+  },
+  ticketRight: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 16,
@@ -397,11 +401,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 12,
-  },
-  playIcon: {
-    fontSize: 16,
-    color: colors.primary,
-    marginLeft: 2,
   },
   price: {
     fontSize: 18,
