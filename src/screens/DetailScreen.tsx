@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,9 +7,12 @@ import {
   TouchableOpacity,
   ScrollView,
   StatusBar,
+  Dimensions,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import colors from '../theme/color';
+
+const { width, height } = Dimensions.get('window');
 
 export default function DetailScreen({ route, navigation }: any) {
   const {
@@ -22,6 +25,12 @@ export default function DetailScreen({ route, navigation }: any) {
     description,
     coordinates,
   } = route.params;
+
+  const [quantity, setQuantity] = useState(1);
+
+  const incrementQuantity = () => setQuantity(prev => prev + 1);
+  const decrementQuantity = () =>
+    setQuantity(prev => (prev > 1 ? prev - 1 : 1));
 
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -137,14 +146,43 @@ export default function DetailScreen({ route, navigation }: any) {
           </View>
         </View>
 
-        <TouchableOpacity
-          style={styles.bookBtn}
-          onPress={() => navigation.navigate('Root', { screen: 'Tickets' })}
-        >
-          <Text style={styles.bookBtnText}>
-            Book Now - ${price.toLocaleString()}
-          </Text>
-        </TouchableOpacity>
+        {/* Book Now Section - Single Row */}
+        <View style={styles.bookSection}>
+          {/* Counter */}
+          <View style={styles.counterContainer}>
+            <TouchableOpacity
+              style={styles.counterBtn}
+              onPress={decrementQuantity}
+            >
+              <Text style={styles.counterBtnText}>-</Text>
+            </TouchableOpacity>
+
+            <Text style={styles.counterText}>{quantity}</Text>
+
+            <TouchableOpacity
+              style={styles.counterBtn}
+              onPress={incrementQuantity}
+            >
+              <Text style={styles.counterBtnText}>+</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Price Info */}
+          <View style={styles.priceInfo}>
+            <Text style={styles.totalLabel}>Total Price</Text>
+            <Text style={styles.totalPrice}>
+              ${(price * quantity).toLocaleString()}
+            </Text>
+          </View>
+
+          {/* Book Button */}
+          <TouchableOpacity
+            style={styles.bookBtn}
+            onPress={() => navigation.navigate('Root', { screen: 'Tickets' })}
+          >
+            <Text style={styles.bookBtnText}>Book Now</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </View>
   );
@@ -153,7 +191,7 @@ export default function DetailScreen({ route, navigation }: any) {
 const styles = StyleSheet.create({
   image: {
     width: '100%',
-    height: 340,
+    height: height * 0.42,
   },
   headerButtons: {
     position: 'absolute',
@@ -215,7 +253,7 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
   title: {
-    fontSize: 28,
+    fontSize: width * 0.07,
     fontWeight: '800',
     color: colors.text,
     marginBottom: 12,
@@ -321,23 +359,78 @@ const styles = StyleSheet.create({
     color: colors.text,
     textAlign: 'center',
   },
-  bookBtn: {
+  bookSection: {
     marginHorizontal: 20,
     marginTop: 24,
     marginBottom: 32,
-    backgroundColor: colors.primary,
-    padding: 18,
+    backgroundColor: '#fff',
     borderRadius: 16,
+    padding: 16,
+    flexDirection: 'row',
     alignItems: 'center',
+    gap: 12,
     elevation: 4,
-    shadowColor: colors.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
     shadowRadius: 8,
+  },
+  counterContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.background,
+    borderRadius: 12,
+    paddingVertical: 6,
+    paddingHorizontal: 8,
+  },
+  counterBtn: {
+    width: 24,
+    height: 24,
+    backgroundColor: colors.primary,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  counterBtnText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '700',
+  },
+  counterText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: colors.text,
+    marginHorizontal: 12,
+    minWidth: 24,
+    textAlign: 'center',
+  },
+  priceInfo: {
+    flex: 1,
+  },
+  totalLabel: {
+    fontSize: 11,
+    color: colors.subText,
+    marginBottom: 2,
+  },
+  totalPrice: {
+    fontSize: 17.5,
+    fontWeight: '800',
+    color: colors.text,
+  },
+  bookBtn: {
+    backgroundColor: colors.primary,
+    paddingVertical: 10,
+    paddingHorizontal: 22,
+    borderRadius: 12,
+    elevation: 2,
+    shadowColor: colors.primary,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
   },
   bookBtnText: {
     color: '#fff',
     fontWeight: '700',
-    fontSize: 16,
+    fontSize: 14,
   },
 });

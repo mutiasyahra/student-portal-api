@@ -1,8 +1,10 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import colors from '../theme/color';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+
+const { width } = Dimensions.get('window');
 
 export default function BottomBar({
   state,
@@ -13,8 +15,8 @@ export default function BottomBar({
     if (routeName === 'Home') {
       return isFocused ? 'home' : 'home-outline';
     }
-    if (routeName === 'Explore') {
-      return isFocused ? 'compass' : 'compass-outline';
+    if (routeName === 'Tickets') {
+      return isFocused ? 'ticket' : 'ticket-outline';
     }
     if (routeName === 'Profile') {
       return isFocused ? 'person' : 'person-outline';
@@ -43,18 +45,11 @@ export default function BottomBar({
             style={styles.btn}
             activeOpacity={0.7}
           >
-            <View
-              style={[
-                styles.iconWrapper,
-                isFocused && styles.iconWrapperActive,
-              ]}
-            >
-              <Icon
-                name={getIconName(route.name, isFocused)}
-                size={26}
-                color={isFocused ? colors.primary : '#9CA3AF'}
-              />
-            </View>
+            <Icon
+              name={getIconName(route.name, isFocused)}
+              size={26}
+              color={isFocused ? colors.primary : '#9CA3AF'}
+            />
           </TouchableOpacity>
         );
       })}
@@ -71,7 +66,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 24,
     alignItems: 'center',
     justifyContent: 'space-around',
-    paddingHorizontal: 24,
+    paddingHorizontal: width * 0.06,
     elevation: 8,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: -2 },
@@ -83,15 +78,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 12,
-  },
-  iconWrapper: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  iconWrapperActive: {
-    backgroundColor: 'rgba(255, 119, 84, 0.1)',
   },
 });

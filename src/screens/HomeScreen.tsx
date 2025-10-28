@@ -8,11 +8,14 @@ import {
   FlatList,
   TouchableOpacity,
   StatusBar,
+  Dimensions,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import colors from '../theme/color';
 import { destinations } from '../utils/dummyData';
 import DestinationCard from '../components/DestinationCard';
+
+const { width } = Dimensions.get('window');
 
 export default function HomeScreen({ navigation }: any) {
   const [query, setQuery] = useState('');
@@ -132,7 +135,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   greeting: {
-    fontSize: 20,
+    fontSize: width * 0.05,
     fontWeight: '700',
     color: colors.text,
   },
@@ -168,10 +171,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   bannerTitle: {
-    fontSize: 32,
+    fontSize: width * 0.08,
     fontWeight: '700',
     color: '#fff',
-    lineHeight: 38,
+    lineHeight: width * 0.095,
   },
   bannerArrow: {
     width: 48,
@@ -224,12 +227,12 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontWeight: '700',
-    fontSize: 18,
+    fontSize: width * 0.045,
     color: colors.text,
   },
   viewAll: {
     color: colors.primary,
-    fontSize: 14,
+    fontSize: width * 0.035,
     fontWeight: '600',
   },
 });

@@ -6,9 +6,12 @@ import {
   FlatList,
   TouchableOpacity,
   StatusBar,
+  Dimensions,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import colors from '../theme/color';
+
+const { width } = Dimensions.get('window');
 
 const dummyTickets = [
   {
@@ -26,14 +29,38 @@ const dummyTickets = [
   {
     id: 't2',
     from: 'Rotterdam',
-    to: 'Labuan Bajo',
+    to: 'Bali',
     fromCode: 'NL',
     toCode: 'IDN',
     date: 'Mon, 23 Jun',
-    time: '5:30pm',
-    arrivalTime: '3:30am',
+    time: '8:45am',
+    arrivalTime: '11:15pm',
+    arrivalDate: 'Mon, 23 Jun',
+    price: 1450,
+  },
+  {
+    id: 't3',
+    from: 'Rotterdam',
+    to: 'Jakarta',
+    fromCode: 'NL',
+    toCode: 'IDN',
+    date: 'Mon, 23 Jun',
+    time: '2:15pm',
+    arrivalTime: '9:45am',
     arrivalDate: 'Tue, 24 Jun',
-    price: 1700,
+    price: 1250,
+  },
+  {
+    id: 't4',
+    from: 'Rotterdam',
+    to: 'Surabaya',
+    fromCode: 'NL',
+    toCode: 'IDN',
+    date: 'Mon, 23 Jun',
+    time: '11:30pm',
+    arrivalTime: '7:00pm',
+    arrivalDate: 'Tue, 24 Jun',
+    price: 1350,
   },
 ];
 
@@ -206,7 +233,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#F3F4F6',
   },
   title: {
-    fontSize: 18,
+    fontSize: width * 0.045,
     fontWeight: '700',
     color: colors.text,
   },
@@ -215,7 +242,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   label: {
-    fontSize: 12,
+    fontSize: width * 0.03,
     color: colors.subText,
     marginBottom: 8,
     marginTop: 16,
@@ -229,7 +256,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   dropdownText: {
-    fontSize: 16,
+    fontSize: width * 0.04,
     fontWeight: '600',
     color: colors.text,
   },
@@ -240,7 +267,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   tab: {
-    paddingHorizontal: 18,
+    paddingHorizontal: width * 0.045,
     paddingVertical: 10,
     borderRadius: 24,
     backgroundColor: colors.background,
@@ -249,7 +276,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
   },
   tabText: {
-    fontSize: 14,
+    fontSize: width * 0.035,
     fontWeight: '600',
     color: colors.text,
   },
@@ -263,7 +290,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   dateMonth: {
-    fontSize: 16,
+    fontSize: width * 0.04,
     fontWeight: '600',
     color: colors.text,
   },
@@ -274,16 +301,16 @@ const styles = StyleSheet.create({
   dateBox: {
     alignItems: 'center',
     paddingVertical: 10,
-    paddingHorizontal: 12,
+    paddingHorizontal: width * 0.03,
     borderRadius: 12,
     backgroundColor: colors.background,
-    minWidth: 48,
+    minWidth: width * 0.12,
   },
   dateBoxActive: {
     backgroundColor: colors.primary,
   },
   dateDay: {
-    fontSize: 12,
+    fontSize: width * 0.03,
     color: colors.subText,
     marginBottom: 4,
   },
@@ -291,7 +318,7 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   dateNum: {
-    fontSize: 16,
+    fontSize: width * 0.04,
     fontWeight: '700',
     color: colors.text,
   },
@@ -299,7 +326,7 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   ticketsFound: {
-    fontSize: 16,
+    fontSize: width * 0.04,
     fontWeight: '700',
     color: colors.text,
     paddingHorizontal: 20,
@@ -327,7 +354,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   ticketLabel: {
-    fontSize: 12,
+    fontSize: width * 0.03,
     color: '#fff',
     fontWeight: '600',
     marginBottom: 12,
@@ -342,13 +369,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   airportCode: {
-    fontSize: 24,
+    fontSize: width * 0.06,
     fontWeight: '800',
     color: '#fff',
     marginBottom: 4,
   },
   airportCity: {
-    fontSize: 10,
+    fontSize: width * 0.025,
     color: 'rgba(255,255,255,0.8)',
   },
   planeIcon: {
@@ -365,13 +392,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   time: {
-    fontSize: 14,
+    fontSize: width * 0.035,
     fontWeight: '700',
     color: '#fff',
     marginBottom: 2,
   },
   timeDate: {
-    fontSize: 10,
+    fontSize: width * 0.025,
     color: 'rgba(255,255,255,0.8)',
   },
   timeLine: {
@@ -403,7 +430,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   price: {
-    fontSize: 18,
+    fontSize: width * 0.045,
     fontWeight: '800',
     color: '#fff',
   },

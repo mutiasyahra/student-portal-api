@@ -6,9 +6,12 @@ import {
   StyleSheet,
   TouchableOpacity,
   ImageSourcePropType,
+  Dimensions,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import colors from '../theme/color';
+
+const { width, height } = Dimensions.get('window');
 
 export type DestinationCardProps = {
   id: string;
@@ -54,7 +57,7 @@ export default function DestinationCard({
         >
           <Icon
             name={isFavorite ? 'heart' : 'heart-outline'}
-            size={20}
+            size={width * 0.05}
             color={isFavorite ? colors.primary : '#6B7280'}
           />
         </TouchableOpacity>
@@ -82,7 +85,7 @@ export default function DestinationCard({
 const styles = StyleSheet.create({
   card: {
     width: '100%',
-    height: 320,
+    height: height * 0.4,
     borderRadius: 20,
     marginBottom: 16,
     overflow: 'hidden',
@@ -104,17 +107,17 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    padding: 16,
+    padding: width * 0.04,
     justifyContent: 'space-between',
   },
   favoriteBtn: {
     position: 'absolute',
-    top: 16,
-    right: 16,
-    width: 40,
-    height: 40,
+    top: width * 0.04,
+    right: width * 0.04,
+    width: width * 0.1,
+    height: width * 0.1,
     backgroundColor: 'rgba(255,255,255,0.95)',
-    borderRadius: 20,
+    borderRadius: width * 0.05,
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 10,
@@ -137,7 +140,7 @@ const styles = StyleSheet.create({
   },
   locationText: {
     color: '#fff',
-    fontSize: 12,
+    fontSize: width * 0.03,
     fontWeight: '600',
   },
   ratingBadge: {
@@ -151,7 +154,7 @@ const styles = StyleSheet.create({
   },
   ratingText: {
     color: '#fff',
-    fontSize: 12,
+    fontSize: width * 0.03,
     fontWeight: '700',
   },
   cardInfo: {
@@ -160,13 +163,13 @@ const styles = StyleSheet.create({
     borderRadius: 16,
   },
   cardTitle: {
-    fontSize: 18,
+    fontSize: width * 0.045,
     fontWeight: '700',
     color: '#fff',
     marginBottom: 4,
   },
   cardPrice: {
-    fontSize: 15,
+    fontSize: width * 0.038,
     fontWeight: '600',
     color: '#fff',
   },
