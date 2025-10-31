@@ -1,4 +1,4 @@
-# Travel App - Session 2
+# Destination App
 
 A React Native travel application with bottom tab navigation, reusable destination cards, and detail screen with parameter passing.
 
@@ -186,13 +186,9 @@ src/
 - [x] Smooth animations
 - [x] Extra UI polish (shadows, gradients)
 
-## 📸 Screenshots
-
-[Add your screenshots here]
-
 ## 👨‍💻 Author
 
-**Haikal**
+**Meutya Syahra**
 
 ## 📄 License
 
